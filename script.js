@@ -3,79 +3,64 @@ var today = moment().format('dddd, MMMM Do');
 $("#currentDay").append(today);
 
 // save to local storage
-var saveButton = $(this).attr("saveBtn");
-var calendarInput = localStorage.getItem(".calendarInput");
-    
-$(".saveBtn").click(function(event){
-    event.preventDefault();
+window.onload = function(){
 
-    var calendarInput = $(".calendarInput").val();
-
-    localStorage.setItem("calendarInput", calendarInput);
-    calendarInput.innerHTML = $(".calendarInput").val();
-});
+  var $saveButtons = $('.saveBtn'); 
+  var calendarInput = $(".calendarInput")[0];  
+  calendarInput.value =  localStorage.getItem("calendarInput"); 
+}
 
 // pull from local storage
-
-
-     
-// traverse the DOM and get the value of the form input 
-
-// input the sibling of the button div. Button is the child of the button div
-
-
-// // what's in red is just a file name green is the value 
-  
-//   localStorage.getItem("inputtedEvent")
-// // THIS 
-// });
-
+$(".saveBtn").click(function(event){
+    event.preventDefault();
+    var calendarInput = $(".calendarInput").val();
+    localStorage.setItem("calendarInput", calendarInput);  
+    calendarInput.value = $(".calendarInput").val();
+});
 
 // change colour based on time of day
-// update these 
+var calendarInputs = $('.hour');
 
-// var nineAM = document.getElementById('#9');
-// var tenAM = document.getElementById('#10');
-// var elevenAM = document.getElementById('#11');
-// var twelvePM = document.getElementById('#12');
-// var onePM = document.getElementById('#1');
-// var twoPM = document.getElementById('#2');
-// var threePM = document.getElementById('#3');
-// var fourPM = document.getElementById('#4');
-// var fivePM = document.getElementById('#5');
+let hours = [];
+for(var i = 0; i < calendarInputs.length; i++){
+
+    let $span = $(calendarInputs[i]).find('span');
+    let number = Number($span.text().trim().split(':')[0]);
+    let spanElement = $span[0];
+
+    let $parent = $(calendarInputs[i]).parent();
+    let inputNode = $parent.find('input')[0];
+    if(i > 3){
+      number += 12;
+      hours.push({domNode:inputNode, hour: number});
+    }
+    else{
+      hours.push({domNode:inputNode, hour: number});
+    }
+}
+
 
 // function timeOfDate(){
 // get current time using moment.js
-console.log(moment().hour());
+// console.log(moment().hour());
 
-// to get time for each time block use .each for each time block you get the time by class getAttribute to get id split function 
-// can't use number in JS use split method to split hour-9 to just 9. creates an array [0] hour [1] 9 
-// THEN use if else statement 
+// to get time for each time block use .each for each time block you get the time by class getAttribute to get id split function
+// can't use number in JS use split method to split hour-9 to just 9. creates an array [0] hour [1] 9
+// THEN use if else statement
 
-    // var present = "";
-    // var past = "";
-    // var future = "";
+    hours.forEach( hourObj =>{
 
-    // if (nineAM == moment('HH')){
-    //     document.body.className = "present";
-    // }
-    // else if (nineAM < moment('HH')){
-    //     document.body.className = "past";
-    // }
-    // else{
-    //     document.body.className = "future";
-    // }
-    // console.log(moment.js)
-// };
-// 	var d = moment();
-// 	var n = d.getHours();
-// 	if (n > 19 || n < 6)
-// 	  // If time is after 7PM or before 6AM, apply night theme to ‘body’
-// 	  document.body.className = "past";
-// 	else if (n > 16 && n < 19)
-// 	  // If time is between 4PM – 7PM sunset theme to ‘body’
-// 	  document.body.className = "present";
-// 	else
-// 	  // Else use ‘day’ theme
-// 	  document.body.className = "future";
-// });
+      var hourNumber = hourObj.hour; // 24 hour.
+      var domNode = hourObj.domNode;
+      var currentHour = moment().hour();
+
+      if(hourNumber < currentHour){
+          $(domNode).addClass('past');
+      }
+      else if(hourNumber == currentHour){
+          $(domNode).addClass('present');
+      }
+      else{
+          $(domNode).addClass('future');
+      }
+    })
