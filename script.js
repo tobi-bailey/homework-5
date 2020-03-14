@@ -39,14 +39,7 @@ for(var i = 0; i < calendarInputs.length; i++){
     }
 }
 
-
-// function timeOfDate(){
 // get current time using moment.js
-// console.log(moment().hour());
-
-// to get time for each time block use .each for each time block you get the time by class getAttribute to get id split function
-// can't use number in JS use split method to split hour-9 to just 9. creates an array [0] hour [1] 9
-// THEN use if else statement
 
     hours.forEach( hourObj =>{
 
